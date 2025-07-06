@@ -26,6 +26,15 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Installed packages (local)
+aws_lambda_powertools/
+requests/
+botocore/
+urllib3/
+certifi/
+chardet/
+idna/
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -116,7 +125,19 @@ ipython_config.py
 #pdm.toml
 .pdm-python
 .pdm-build/
-
+aws_lambda_powertools-3.16.0.dist-info/
+infra/.terraform.lock.hcl
+infra/terraform.tfstate.backup
+infra/terraform.tfstate
+infra/LICENSE.txt
+infra/.terraform
+bin/
+jmespath-1.0.1.dist-info/
+jmespath/
+typing_extensions-4.14.1.dist-info/
+typing_extensions.py
+lambda_function.zip
+package/
 # pixi
 #   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
 #pixi.lock
