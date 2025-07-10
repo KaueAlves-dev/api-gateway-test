@@ -26,24 +26,19 @@ resource "aws_iam_role_policy_attachment" "attach_basic_execution" {
 
 # Criando minha lambda chamada "consulta-cep-func"
 resource "aws_lambda_function" "consulta_cep" {
-  function_name = "consulta-cep-func"
+  function_name = var.lambda_function_name
   role          = aws_iam_role.lambda_exec_role.arn
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
-  filename      = "../lambda_function.zip"   # ajuste o caminho conforme sua estrutura
+  filename      = var.lambda_filename   # ajuste o caminho conforme sua estrutura
 
-  source_code_hash = filebase64sha256("../lambda_function.zip")
+  source_code_hash = filebase64sha256(var.lambda_filename)
 
-  environment {
-    variables = {
-      # Se precisar passar variáveis, defina aqui
-    }
-  }
 }
 
 # Criando o api-gateway
 resource "aws_apigatewayv2_api" "api" {
-  name          = "consulta-cep-api"
+  name          = var.api_name
   protocol_type = "HTTP"
 }
 
@@ -58,7 +53,7 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 # Criando uma rota GET
 resource "aws_apigatewayv2_route" "route" {
   api_id    = aws_apigatewayv2_api.api.id
-  route_key = "GET /cep/{cep}"
+  route_key = var.route_key_cep
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
 
@@ -81,6 +76,6 @@ resource "aws_apigatewayv2_stage" "default" {
 # Ajustando o tempo de retencao dos logs no cloudwatch para essa lambda
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name              = "/aws/lambda/consulta-cep-func"
-  retention_in_days = 1  # opcoes: 1, 3, 7, 30, 90, etx
+  retention_in_days = var.logs_retention  # opcoes: 1, 3, 7, 30, 90, etx
 }
 
