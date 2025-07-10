@@ -7,7 +7,7 @@ variable "region" {
 
 variable "lambda_function_name"{
   description = "nome da função lambda"
-  type =      = string
+  type        = string
 }
 
 variable "lambda_filename"{
